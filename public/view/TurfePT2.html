@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../css/turfe.css">
+</head>
+
+<body>
+    <h1 class="turfe">Turfe Parte 2</h1>
+
+     <div class="cavalo-container">
+        <img src="../assets/cavalo.gif" class="cavalo-gif">
+    </div>
+
+    <label>Quantidade de cavalos (2 a 6):</label>
+    <input type="number" id="ipt_cavalo">
+    <button onclick="somIniciarTurfe()">Iniciar</button>
+
+     <!--Sons-->
+    <audio id="somIniciar" src="../rifle.mp3"></audio>
+    <audio id="somIniciar2" src="../cavalosCorrendo.mp3"></audio>
+     <audio id="somIniciar3" src="../gameOver.mp3"></audio>
+    <audio id="somIniciar4" src="../win.mp3"></audio>
+
+    <div id="div_mensagem"></div>
+
+</body>
+</html>
+
+<script>
+// Sons 
+function somIniciarTurfe() {
+    let audio = document.getElementById("somIniciar");
+    let audio2 = document.getElementById("somIniciar2");
+    let audio3 = document.getElementById("somIniciar3");
+    let audio4 = document.getElementById("somIniciar4");
+
+    audio.currentTime = 0;
+    audio2.currentTime = 0;
+    audio3.currentTime = 0;
+    audio4.currentTime = 0;
+
+
+    audio.play();
+    audio2.play();
+    audio3.play();
+    audio4.play();
+
+
+    setTimeout(() => {
+        som3.play();
+    }, 4000);
+
+
+    setTimeout(() => {
+        som4.play();
+    }, 6000);
+
+
+    iniciar();
+}
+
+    function iniciar() {
+
+        var qtdCavalo = Number(ipt_cavalo.value);
+        var mensagem = ``;
+        var listaNome = [];
+        var listaTempo = [];
+
+        if (qtdCavalo < 2 || qtdCavalo > 6) {
+            alert("Digite entre 2 e 6 cavalos.");
+        }
+
+
+        for (var i = 0; i < qtdCavalo; i++) {
+            var nome = prompt(`Digite o nome do cavalo ${i + 1}`);
+            listaNome.push(nome);
+        }
+
+        var voltas = Number(prompt("Digite a quantidade de voltas do turfe:"));
+
+        while (voltas <= 0) {
+            voltas = Number(prompt("Número de voltas inválido! Insira outro número:"));
+        }
+
+        for (var i = 0; i < qtdCavalo; i++) {
+            listaTempo[i] = 0;
+        }
+
+        for (var j = 1; j <= voltas; j++) {
+            mensagem += `Volta ${j}<br><br>`;
+
+            for (var k = 0; k < qtdCavalo; k++) {
+                var tempo = Number((Math.random() * 2 + 7).toFixed(2));
+                listaTempo[k] += tempo;
+
+                mensagem += `${listaNome[k]} – ${tempo} – ${listaTempo[k].toFixed(2)} - `;
+            }
+
+            mensagem += `<br><br>`;
+        }
+
+        var p1 = 0;
+        var p2 = 0;
+        var p3 = 0;
+
+
+        for (var i = 0; i < qtdCavalo; i++) {
+            if (listaTempo[i] < listaTempo[p1]) {
+                p1 = i
+            }
+        }
+
+        var menor = 99999;
+        for (var i = 0; i < qtdCavalo; i++) {
+            if (i != p1 && listaTempo[i] < menor) {
+                menor = listaTempo[i];
+                p2 = i
+            }
+        }
+
+        var menor = 99999;
+        for (var i = 0; i < qtdCavalo; i++) {
+            if (i != p1 && i != p2 && listaTempo[i] < menor) {
+                menor = listaTempo[i];
+                p3 = i
+            }
+        }
+
+
+
+        mensagem += `<br><b>PÓDIO FINAL</b><br><br>
+    1º lugar: ${listaNome[p1]} – ${listaTempo[p1].toFixed(2)}<br>
+    2º lugar: ${listaNome[p2]} – ${listaTempo[p2].toFixed(2)}<br>
+    3º lugar: ${listaNome[p3]} – ${listaTempo[p3].toFixed(2)}<br>`;
+
+        div_mensagem.innerHTML = mensagem;
+
+    }
+</script>
