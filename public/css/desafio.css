@@ -1,0 +1,199 @@
+/* ======== FUNDO ======== */
+body {
+    font-family: "Rye", serif;
+    background: linear-gradient(#e8c08a, #c89b62);
+    padding: 25px;
+    color: #3b1f0b;
+}
+
+
+/* ======== MOLDURA FAROESTE ======== */
+body {
+    border: 40px solid transparent;
+    padding: 40px;
+    box-sizing: border-box;
+
+    /* borda de madeira usando degrade */
+    border-image: linear-gradient(45deg, #4b2a14, #8c5a2b, #5c3417) 30;
+}
+
+/* Efeito 3D de madeira */
+body {
+    box-shadow:
+        inset 0 0 25px rgba(0,0,0,0.6),
+        inset 0 0 60px rgba(0,0,0,0.8),
+        0 0 20px rgba(0,0,0,0.5);
+}
+
+/* Cantos decorados */
+body::before, body::after {
+    content: "";
+    position: fixed;
+    width: 120px;
+    height: 120px;
+    background: radial-gradient(circle, #8c5a2b, #4b2a14);
+    border-radius: 12px;
+    box-shadow:
+        inset 0 0 10px rgba(0,0,0,0.7),
+        0 0 8px rgba(0,0,0,0.4);
+    z-index: 999;
+}
+
+/* canto superior esquerdo */
+body::before {
+    top: 0;
+    left: 0;
+    transform: translate(-30%, -30%);
+}
+
+/* canto inferior direito */
+body::after {
+    bottom: 0;
+    right: 0;
+    transform: translate(30%, 30%);
+}
+
+/* Ocultar tudo inicialmente */
+#div_cavalos,
+#div_mensagem,
+#div_final {
+    display: none;
+}
+
+/* ======== CARTÕES DE SEÇÃO ======== */
+#div_cavalos, #div_mensagem, #div_final {
+    background: #d3a167;
+    border: 5px solid #5a3312;
+    border-radius: 14px;
+    padding: 18px;
+    margin-top: 25px;
+
+    background-image: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(0,0,0,0.08) 100%);
+    box-shadow:
+        0px 5px 10px rgba(0,0,0,0.4),
+        inset 0px 0px 8px rgba(0,0,0,0.25);
+}
+
+/* ======== TÍTULOS ======== */
+h1, h2, h3 {
+    font-family: "Rye", serif;
+    color: #4b260f;
+    text-shadow:
+        1px 1px 0px #f8e8c0,
+        2px 2px 0px rgba(0,0,0,0.15);
+    letter-spacing: 1px;
+}
+
+.turfe {
+    font-size: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ======== LABELS ======== */
+span {
+    font-size: 20px;
+    font-weight: bold;
+    text-shadow: 1px 1px #ffe6c7;
+}
+
+/* ======== INPUTS ======== */
+input {
+    padding: 10px;
+    margin-top: 6px;
+    margin-bottom: 15px;
+    width: 240px;
+    font-size: 16px;
+
+    color: #4b260f;
+    background: #f7e0b6;
+    border: 3px solid #7a4f28;
+    border-radius: 8px;
+    box-shadow: inset 2px 2px 4px #0003;
+}
+
+input:focus {
+    outline: none;
+    border-color: #b47a42;
+    box-shadow: inset 2px 2px 6px #0005;
+    background: #fff0cc;
+}
+
+/* ======== BOTÕES ======== */
+button {
+    padding: 12px 20px;
+    background: #8b5a2b;
+    border: 4px solid #573419;
+    border-radius: 10px;
+    color: #ffe0b3;
+    cursor: pointer;
+    font-size: 17px;
+    font-weight: bold;
+
+    text-shadow: 1px 1px #3a1f0f;
+
+    background-image: linear-gradient(120deg, rgba(255,255,255,0.2), rgba(0,0,0,0.15));
+    box-shadow:
+        0px 4px 0px #573419,
+        0px 6px 10px rgba(0,0,0,0.3);
+}
+
+button:hover {
+    background: #75451f;
+    box-shadow:
+        0px 4px 0px #4a2b13,
+        0px 6px 10px rgba(0,0,0,0.4);
+}
+
+/* ======== IMAGENS ======== */
+img {
+    margin: 10px;
+    border-radius: 10px;
+    border: 4px solid #5a381b;
+    box-shadow:
+        0px 4px 6px rgba(0,0,0,0.4),
+        inset 0px 0px 6px rgba(0,0,0,0.5);
+    background: #f2d5ab;
+    padding: 4px;
+}
+
+/* ======== DESTAQUES ======== */
+strong {
+    color: #3a1f0f;
+    background: rgba(255,255,255,0.3);
+    padding: 2px 6px;
+    border-radius: 4px;
+    box-shadow: inset 0px 0px 3px #0004;
+}
+
+
+.cavalo-container {
+    width: 100%;
+    overflow: hidden;
+    height: 150px;
+    margin-bottom: 10px;
+    margin-top: -50px;
+}
+
+.cavalo-gif {
+    width: 300px;
+    position: relative;
+    animation: correrTela 9s linear infinite;
+
+    /* Sem molduras */
+    border: none;
+    background: transparent;
+    box-shadow: none;
+    padding: 0;
+    margin: 0;
+}
+
+@keyframes correrTela {
+    0% {
+        transform: translateX(-200px); /* começa antes da tela */
+    }
+    100% {
+        transform: translateX(100vw); /* atravessa toda a largura da tela */
+    }
+}

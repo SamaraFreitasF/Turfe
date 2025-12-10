@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Turfe Amigo</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rye&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../css/desafio.css">
+</head>
+
+<body>
+
+    <h1 class="turfe">Turfe Amigo</h1>
+
+    <div class="cavalo-container">
+        <img src="../assets/cavalo.gif" class="cavalo-gif">
+    </div>
+
+    <span>Quantidade de cavalos:</span><br>
+    <input type="number" id="input_qtd" placeholder="Entre 2 e 6"><br><br>
+
+    <span>Quantidade de voltas:</span><br>
+    <input type="number" id="input_voltas"><br><br>
+
+    <button id="btnConfirmar" onclick="definirCavalos()">Confirmar</button>
+
+    <!-- SOM CONFIRMAR -->
+    <audio id="somConfirmar" src="../cavalo.mp3"></audio>
+
+
+    <!-- SOM INICIAR TURFE -->
+    <audio id="somIniciar" src="../rifle.mp3"></audio>
+     <audio id="somIniciar2" src="../cavalosCorrendo.mp3"></audio>
+
+     <!-- SOM ENCERRAR -->
+    <audio id="somEncerrar" src="../gameOver.mp3"></audio>
+    <audio id="somEncerrar2" src="../win.mp3"></audio>
+
+
+
+    <div id="div_cavalos"></div>
+    <div id="div_mensagem"></div>
+    <div id="div_final"></div>
+
+    
+
+</body>
+
+</html>
+
+<script>
+
+    var nomes = [];
+    var acumulado = [];
+    var extrato = [];
+
+    //  SOM BOTÃO CONFIRMAR
+    window.onload = function () {
+        const botao = document.getElementById("btnConfirmar");
+        const som = document.getElementById("somConfirmar");
+
+        botao.addEventListener("click", () => {
+            som.currentTime = 0;
+            som.play();
+        });
+    };
+
+    // FUNÇÃO PARA SOM DO INICIAR TURFE
+    function somIniciarTurfe() {
+        let audio = document.getElementById("somIniciar");
+        let audio2 = document.getElementById("somIniciar2")
+
+        audio.currentTime = 0;
+        audio2.currentTime = 0;
+
+        audio.play();
+        audio2.play();
+
+        iniciar(); // chama sua função original
+    }
+
+  
+    function definirCavalos() {
+
+        var qtd = Number(input_qtd.value);
+        var voltas = Number(input_voltas.value);
+
+        div_cavalos.innerHTML = "";
+        div_mensagem.innerHTML = "";
+        div_final.innerHTML = "";
+
+        var erro = 0;
+
+        if (qtd < 2 || qtd > 6) {
+            alert("A quantidade precisa ser entre 2 e 6.");
+            erro = 1;
+        }
+
+        if (voltas <= 0) {
+            alert("Digite a quantidade de voltas.");
+            erro = 1;
+        }
+
+        if (erro == 0) {
+
+            div_cavalos.style.display = "block";
+            div_mensagem.style.display = "none";
+            div_final.style.display = "none";
+
+            div_cavalos.innerHTML = "<h3>Digite os nomes:</h3>";
+
+            for (var i = 0; i < qtd; i++) {
+                div_cavalos.innerHTML +=
+                    "Cavalo " + (i + 1) + ": <input id='nome_" + i + "'><br><br>";
+            }
+
+            // Botão agora chama somIniciarTurfe()
+            div_cavalos.innerHTML += "<button onclick='somIniciarTurfe()'>Iniciar Turfe</button>";
+        }
+    }
+
+    function iniciar() {
+
+        var qtd = Number(input_qtd.value);
+        var voltas = Number(input_voltas.value);
+
+        nomes = [];
+        acumulado = [];
+        extrato = [];
+
+        var erro = 0;
+
+        for (var i = 0; i < qtd; i++) {
+
+            var nome = document.getElementById("nome_" + i).value;
+
+            if (nome.trim() == "") {
+                alert("Todos os cavalos precisam de nome.");
+                erro = 1;
+            }
+
+            nomes[i] = nome;
+            acumulado[i] = 0;
+        }
+
+        if (erro == 0) {
+
+            div_cavalos.style.display = "none";
+            div_mensagem.style.display = "block";
+            div_final.style.display = "none";
+
+            div_mensagem.innerHTML = "<h2>Corrida Iniciada</h2>";
+
+            for (var v = 0; v < voltas; v++) {
+
+                div_mensagem.innerHTML += "<br><strong>Volta " + (v + 1) + "</strong><br>";
+
+                var dadosVolta = [];
+
+                for (var c = 0; c < nomes.length; c++) {
+
+                    var tempoAtual = Number((Math.random() * 2 + 7).toFixed(1));
+                    acumulado[c] += tempoAtual;
+
+                    dadosVolta[c] = {
+                        nome: nomes[c],
+                        tempo: tempoAtual,
+                        total: acumulado[c]
+                    };
+
+                    div_mensagem.innerHTML +=
+                        nomes[c] + " – " + tempoAtual.toFixed(1) +
+                        " – " + acumulado[c].toFixed(2) + "<br>";
+                }
+
+                var melhor = dadosVolta[0].total;
+                var lider = dadosVolta[0].nome;
+
+                var segundoMelhor = 999;
+                var segundoNome = "";
+
+                for (var x = 0; x < dadosVolta.length; x++) {
+
+                    if (dadosVolta[x].total < melhor) {
+                        melhor = dadosVolta[x].total;
+                        lider = dadosVolta[x].nome;
+                    }
+                }
+
+                for (var x = 0; x < dadosVolta.length; x++) {
+
+                    if (dadosVolta[x].nome != lider &&
+                        dadosVolta[x].total < segundoMelhor) {
+
+                        segundoMelhor = dadosVolta[x].total;
+                        segundoNome = dadosVolta[x].nome;
+                    }
+                }
+
+                var dif = segundoMelhor - melhor;
+
+                div_mensagem.innerHTML +=
+                    "<br>Liderando: <b>" + lider + "</b>" +
+                    "<br>Diferença para o 2º: " + dif.toFixed(2) + "s<br><br>";
+
+                extrato[v] = dadosVolta;
+            }
+
+            gerarPodio();
+        }
+    }
+
+    function gerarPodio() {
+
+        var qtd = nomes.length;
+
+        var p1 = 0;
+        var p2 = 1;
+        var p3 = 2;
+
+        for (var i = 1; i < qtd; i++) {
+            if (acumulado[i] < acumulado[p1]) {
+                p1 = i;
+            }
+        }
+
+        for (var i = 0; i < qtd; i++) {
+            if (i != p1) {
+                if (acumulado[i] < acumulado[p2] || p2 == p1) {
+                    p2 = i;
+                }
+            }
+        }
+
+        for (var i = 0; i < qtd; i++) {
+            if (i != p1 && i != p2) {
+                if (
+                    acumulado[i] < acumulado[p3] ||
+                    p3 == p1 || p3 == p2
+                ) {
+                    p3 = i;
+                }
+            }
+        }
+
+        div_mensagem.innerHTML +=
+            "<h2>Pódio</h2>" +
+            "<br>" + nomes[p1] + " – " + acumulado[p1].toFixed(2) +
+            "<br>" + nomes[p2] + " – " + acumulado[p2].toFixed(2) +
+            "<br>" + nomes[p3] + " – " + acumulado[p3].toFixed(2) +
+            "<br><br>" +
+            "<button onclick='encerrar(" + p1 + "," + p2 + "," + p3 + ")'>Encerrar Turfe</button>";
+    }
+function encerrar(p1, p2, p3) {
+
+    // SOM DO ENCERRAMENTO
+    let audioEncerrar = document.getElementById("somEncerrar");
+    let audioEncerrar2 = document.getElementById("somEncerrar2");
+
+    audioEncerrar.currentTime = 0;
+    audioEncerrar.currentTime2 = 0;
+
+    audioEncerrar.play();
+    audioEncerrar2.play();
+
+    div_cavalos.style.display = "none";
+    div_mensagem.style.display = "none";
+    div_final.style.display = "block";
+
+    div_final.innerHTML = "";
+
+    div_final.innerHTML +=
+        "<h1>Encerramento</h1>" +
+        "<h2>Campeão: " + nomes[p1] + "</h2><br>" +
+        "<img src='../assets/1.jpg' width='150' height='100'>" +
+        "<img src='../assets/2.jpg' width='150' height='100'>" +
+        "<img src='../assets/3.jpg' width='150' height='100'><br><br>" +
+        "<h3>Extrato da corrida (última para a primeira):</h3>";
+
+    for (var v = extrato.length - 1; v >= 0; v--) {
+
+        div_final.innerHTML += "<br><strong>Volta " + (v + 1) + "</strong><br>";
+
+        for (var c = 0; c < extrato[v].length; c++) {
+
+            div_final.innerHTML +=
+                extrato[v][c].nome +
+                " – " + extrato[v][c].tempo +
+                " – " + extrato[v][c].total.toFixed(2) +
+                "<br>";
+        }
+    }
+}
+</script>
